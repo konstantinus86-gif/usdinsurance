@@ -186,7 +186,7 @@ export default function EducationPage() {
             </Link>
             <div>
               <h1 className="text-3xl font-bold text-gray-900">Pusat Edukasi & Marketing</h1>
-              <p className="text-gray-600 mt-1">Video pembelajaran dan materi promosi untuk agen BNI Life</p>
+              <p className="text-gray-600 mt-1">Video pembelajaran dan materi promosi untuk agen asuransi</p>
             </div>
           </div>
         </div>

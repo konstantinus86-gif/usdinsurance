@@ -172,8 +172,8 @@ export default function AgentDashboard() {
                   <Shield className="w-5 h-5 text-primary-foreground" />
                 </div>
                 <div>
-                  <h1 className="font-work-sans font-bold text-xl text-foreground">BNI Life</h1>
-                  <p className="text-sm text-muted-foreground">Portal Agen</p>
+                  <h1 className="font-work-sans font-bold text-xl text-foreground">Mastersystem</h1>
+                  <p className="text-sm text-muted-foreground">ICT Solutions</p>
                 </div>
               </div>
             </div>
@@ -202,7 +202,7 @@ export default function AgentDashboard() {
       <div className="container mx-auto px-4 py-6">
         {/* Welcome Section */}
         <div className="mb-8">
-          <h2 className="font-work-sans font-bold text-2xl text-foreground mb-2">Selamat Datang, Agen BNI Life</h2>
+          <h2 className="font-work-sans font-bold text-2xl text-foreground mb-2">Selamat Datang di Mastersystem</h2>
           <p className="text-muted-foreground">
             Kelola aplikasi asuransi dan tingkatkan produktivitas Anda dengan mudah
           </p>

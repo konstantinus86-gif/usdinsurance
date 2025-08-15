@@ -16,16 +16,16 @@ const workSans = Work_Sans({
 })
 
 export const metadata: Metadata = {
-  title: "BNI Life - Aplikasi Agen Asuransi",
-  description: "Aplikasi submission online untuk agen asuransi BNI Life",
+  title: "Mastersystem ICT Solutions - Aplikasi Agen Asuransi",
+  description: "Aplikasi submission online untuk agen asuransi - Mastersystem ICT Solutions",
   generator: "v0.app",
 }
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode
-}>) {
+}) {
   return (
     <html lang="id" className={`${inter.variable} ${workSans.variable} antialiased`}>
       <body className="font-sans">{children}</body>

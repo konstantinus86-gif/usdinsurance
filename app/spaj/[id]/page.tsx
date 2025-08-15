@@ -65,7 +65,7 @@ export default function SPAJDetailPage() {
 </head>
 <body>
     <div class="header">
-        <div class="logo">BNI Life Insurance</div>
+        <div class="logo">Mastersystem ICT Solutions</div>
         <div class="subtitle">Laporan Detail SPAJ</div>
     </div>
 
@@ -174,7 +174,7 @@ export default function SPAJDetailPage() {
     }
 
     <div class="footer">
-        <p>Dokumen ini digenerate secara otomatis oleh sistem BNI Life</p>
+        <p>Dokumen ini digenerate secara otomatis oleh sistem Mastersystem ICT Solutions</p>
         <p>Tanggal cetak: ${new Date().toLocaleDateString("id-ID")} ${new Date().toLocaleTimeString("id-ID")}</p>
     </div>
 </body>

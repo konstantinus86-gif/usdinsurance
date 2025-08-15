@@ -13,25 +13,25 @@ const productTypes = {
     name: "Traditional",
     icon: Shield,
     color: "bg-blue-500",
-    products: ["BNI Life Proteksi", "BNI Life Sejahtera", "BNI Life Berkah"],
+    products: ["Proteksi Tradisional", "Asuransi Sejahtera", "Asuransi Berkah"],
   },
   "unit-link": {
     name: "Unit Link",
     icon: Building2,
     color: "bg-green-500",
-    products: ["BNI Life Investasi Plus", "BNI Life Optimal", "BNI Life Prestasi"],
+    products: ["Investasi Plus", "Unit Link Optimal", "Unit Link Prestasi"],
   },
   "personal-accident": {
     name: "Personal Accident",
     icon: Car,
     color: "bg-orange-500",
-    products: ["BNI Life Kecelakaan Diri", "BNI Life Travel Protection"],
+    products: ["Kecelakaan Diri", "Travel Protection"],
   },
   health: {
     name: "Health",
     icon: Heart,
     color: "bg-red-500",
-    products: ["BNI Life Sehat", "BNI Life Medical Plus", "BNI Life Hospital Cash"],
+    products: ["Asuransi Sehat", "Medical Plus", "Hospital Cash"],
   },
 }
 
