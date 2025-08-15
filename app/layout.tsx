@@ -16,8 +16,8 @@ const workSans = Work_Sans({
 })
 
 export const metadata: Metadata = {
-  title: "Mastersystem ICT Solutions - Aplikasi Agen Asuransi",
-  description: "Aplikasi submission online untuk agen asuransi - Mastersystem ICT Solutions",
+  title: "BNI Life - Aplikasi Agen Asuransi",
+  description: "Aplikasi submission online untuk agen asuransi - BNI Life",
   generator: "v0.app",
 }
 
@@ -32,3 +32,4 @@ export default function RootLayout({
     </html>
   )
 }
+</merged_code>
