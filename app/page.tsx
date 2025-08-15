@@ -168,12 +168,10 @@ export default function AgentDashboard() {
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
               <div className="flex items-center space-x-2">
-                <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-                  <Shield className="w-5 h-5 text-primary-foreground" />
-                </div>
+                <img src="/mastersystem-logo.png" alt="BNI Life" className="w-8 h-8" />
                 <div>
-                  <h1 className="font-work-sans font-bold text-xl text-foreground">Mastersystem</h1>
-                  <p className="text-sm text-muted-foreground">ICT Solutions</p>
+                  <h1 className="font-work-sans font-bold text-xl text-foreground">BNI Life</h1>
+                  <p className="text-sm text-muted-foreground">Agent Portal</p>
                 </div>
               </div>
             </div>
@@ -202,7 +200,7 @@ export default function AgentDashboard() {
       <div className="container mx-auto px-4 py-6">
         {/* Welcome Section */}
         <div className="mb-8">
-          <h2 className="font-work-sans font-bold text-2xl text-foreground mb-2">Selamat Datang di Mastersystem</h2>
+          <h2 className="font-work-sans font-bold text-2xl text-foreground mb-2">Selamat Datang di BNI Life</h2>
           <p className="text-muted-foreground">
             Kelola aplikasi asuransi dan tingkatkan produktivitas Anda dengan mudah
           </p>
@@ -423,3 +421,4 @@ export default function AgentDashboard() {
     </div>
   )
 }
+</merged_code>
