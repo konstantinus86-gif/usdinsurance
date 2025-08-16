@@ -20,6 +20,8 @@ import {
   XCircle,
   AlertTriangle,
   Clock,
+  CreditCard,
+  Calendar,
 } from "lucide-react"
 
 export default function SPAJDetailPage() {
@@ -35,10 +37,62 @@ export default function SPAJDetailPage() {
     setLoading(false)
   }, [params.id])
 
+  const calculatePremiumDetails = (spajData: any) => {
+    if (!spajData) return null
+
+    const basePremium = Number(spajData.premium || 0)
+    const sumInsured = Number(spajData.sumInsured || 0)
+    const paymentMethod = spajData.paymentMethod || "Bulanan"
+
+    // Calculate premium based on payment frequency
+    let premiumPerPeriod = basePremium
+    let frequency = "Bulanan"
+    let periodsPerYear = 12
+
+    switch (paymentMethod.toLowerCase()) {
+      case "tahunan":
+        premiumPerPeriod = basePremium
+        frequency = "Tahunan"
+        periodsPerYear = 1
+        break
+      case "semesteran":
+        premiumPerPeriod = basePremium / 2
+        frequency = "Semesteran"
+        periodsPerYear = 2
+        break
+      case "kuartalan":
+        premiumPerPeriod = basePremium / 4
+        frequency = "Kuartalan"
+        periodsPerYear = 4
+        break
+      case "bulanan":
+      default:
+        premiumPerPeriod = basePremium / 12
+        frequency = "Bulanan"
+        periodsPerYear = 12
+        break
+    }
+
+    // Calculate additional fees
+    const adminFee = premiumPerPeriod * 0.05 // 5% admin fee
+    const totalPremium = premiumPerPeriod + adminFee
+
+    return {
+      basePremium: premiumPerPeriod,
+      adminFee,
+      totalPremium,
+      frequency,
+      periodsPerYear,
+      annualPremium: basePremium,
+      premiumRate: ((basePremium / sumInsured) * 100).toFixed(2),
+    }
+  }
+
   const generatePDF = () => {
     if (!spajData) return
 
-    // Create PDF content
+    const premiumDetails = calculatePremiumDetails(spajData)
+
     const pdfContent = `
 <!DOCTYPE html>
 <html>
@@ -46,27 +100,33 @@ export default function SPAJDetailPage() {
     <meta charset="UTF-8">
     <title>Laporan SPAJ - ${spajData.id}</title>
     <style>
-        body { font-family: Arial, sans-serif; margin: 40px; color: #333; }
-        .header { text-align: center; border-bottom: 3px solid #0ea5e9; padding-bottom: 20px; margin-bottom: 30px; }
-        .logo { font-size: 24px; font-weight: bold; color: #0ea5e9; margin-bottom: 5px; }
+        body { font-family: Arial, sans-serif; margin: 40px; color: #333; line-height: 1.6; }
+        .header { text-align: center; border-bottom: 3px solid #f97316; padding-bottom: 20px; margin-bottom: 30px; }
+        .logo { font-size: 24px; font-weight: bold; color: #f97316; margin-bottom: 5px; }
         .subtitle { color: #666; font-size: 14px; }
-        .section { margin-bottom: 25px; }
-        .section-title { font-size: 18px; font-weight: bold; color: #0ea5e9; margin-bottom: 15px; border-bottom: 1px solid #e5e7eb; padding-bottom: 5px; }
+        .section { margin-bottom: 25px; page-break-inside: avoid; }
+        .section-title { font-size: 18px; font-weight: bold; color: #f97316; margin-bottom: 15px; border-bottom: 1px solid #e5e7eb; padding-bottom: 5px; }
         .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
         .info-item { margin-bottom: 10px; }
         .label { font-weight: bold; color: #374151; }
         .value { color: #6b7280; margin-left: 10px; }
+        .premium-box { background: #fef3c7; border: 2px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 15px 0; }
+        .premium-highlight { background: #f97316; color: white; padding: 10px; border-radius: 5px; text-align: center; font-size: 18px; font-weight: bold; margin: 10px 0; }
         .status-approved { background: #dcfce7; color: #166534; padding: 5px 10px; border-radius: 5px; display: inline-block; }
         .status-pending { background: #fef3c7; color: #92400e; padding: 5px 10px; border-radius: 5px; display: inline-block; }
         .status-rejected { background: #fee2e2; color: #991b1b; padding: 5px 10px; border-radius: 5px; display: inline-block; }
         .underwriting-box { background: #f8fafc; border: 1px solid #e2e8f0; padding: 20px; border-radius: 8px; margin: 15px 0; }
         .footer { margin-top: 40px; text-align: center; font-size: 12px; color: #9ca3af; border-top: 1px solid #e5e7eb; padding-top: 20px; }
+        .payment-schedule { background: #f0f9ff; border: 1px solid #0ea5e9; padding: 15px; border-radius: 8px; margin: 10px 0; }
+        table { width: 100%; border-collapse: collapse; margin: 15px 0; }
+        th, td { border: 1px solid #e5e7eb; padding: 8px; text-align: left; }
+        th { background: #f9fafb; font-weight: bold; }
     </style>
 </head>
 <body>
     <div class="header">
-        <div class="logo">Mastersystem ICT Solutions</div>
-        <div class="subtitle">Laporan Detail SPAJ</div>
+        <div class="logo">BNI Life</div>
+        <div class="subtitle">Laporan Detail SPAJ & Informasi Premi</div>
     </div>
 
     <div class="section">
@@ -118,11 +178,19 @@ export default function SPAJDetailPage() {
                 <span class="label">No. Telepon:</span>
                 <span class="value">${spajData.phone}</span>
             </div>
+            <div class="info-item">
+                <span class="label">Alamat:</span>
+                <span class="value">${spajData.address}</span>
+            </div>
+            <div class="info-item">
+                <span class="label">Pekerjaan:</span>
+                <span class="value">${spajData.occupation}</span>
+            </div>
         </div>
     </div>
 
     <div class="section">
-        <div class="section-title">Detail Produk</div>
+        <div class="section-title">Detail Produk & Premi</div>
         <div class="info-grid">
             <div class="info-item">
                 <span class="label">Nama Produk:</span>
@@ -133,14 +201,49 @@ export default function SPAJDetailPage() {
                 <span class="value">${new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", minimumFractionDigits: 0 }).format(Number(spajData.sumInsured || 0))}</span>
             </div>
             <div class="info-item">
-                <span class="label">Premi:</span>
-                <span class="value">${new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", minimumFractionDigits: 0 }).format(Number(spajData.premium || 0))}</span>
-            </div>
-            <div class="info-item">
                 <span class="label">Cara Bayar:</span>
                 <span class="value">${spajData.paymentMethod}</span>
             </div>
+            <div class="info-item">
+                <span class="label">Rate Premi:</span>
+                <span class="value">${premiumDetails?.premiumRate}% dari UP</span>
+            </div>
         </div>
+        
+        ${
+          premiumDetails
+            ? `
+        <div class="premium-box">
+            <h3 style="margin-top: 0; color: #f59e0b;">Rincian Premi ${premiumDetails.frequency}</h3>
+            <table>
+                <tr>
+                    <td><strong>Premi Dasar ${premiumDetails.frequency}</strong></td>
+                    <td style="text-align: right;"><strong>${new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", minimumFractionDigits: 0 }).format(premiumDetails.basePremium)}</strong></td>
+                </tr>
+                <tr>
+                    <td>Biaya Administrasi (5%)</td>
+                    <td style="text-align: right;">${new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", minimumFractionDigits: 0 }).format(premiumDetails.adminFee)}</td>
+                </tr>
+                <tr style="background: #fef3c7;">
+                    <td><strong>Total Premi ${premiumDetails.frequency}</strong></td>
+                    <td style="text-align: right;"><strong>${new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", minimumFractionDigits: 0 }).format(premiumDetails.totalPremium)}</strong></td>
+                </tr>
+                <tr>
+                    <td><strong>Premi Tahunan</strong></td>
+                    <td style="text-align: right;"><strong>${new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", minimumFractionDigits: 0 }).format(premiumDetails.annualPremium)}</strong></td>
+                </tr>
+            </table>
+            
+            <div class="payment-schedule">
+                <h4 style="margin-top: 0;">Jadwal Pembayaran</h4>
+                <p><strong>Frekuensi:</strong> ${premiumDetails.frequency} (${premiumDetails.periodsPerYear}x per tahun)</p>
+                <p><strong>Jumlah per periode:</strong> ${new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", minimumFractionDigits: 0 }).format(premiumDetails.totalPremium)}</p>
+                <p><strong>Tanggal jatuh tempo pertama:</strong> ${new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toLocaleDateString("id-ID")}</p>
+            </div>
+        </div>
+        `
+            : ""
+        }
     </div>
 
     ${
@@ -158,6 +261,16 @@ export default function SPAJDetailPage() {
                 <span class="value">${spajData.riskScore || "N/A"}</span>
             </div>
             ${
+              spajData.adjustedPremium
+                ? `
+            <div class="info-item">
+                <span class="label">Premi Disesuaikan:</span>
+                <span class="value">${new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", minimumFractionDigits: 0 }).format(Number(spajData.adjustedPremium))}</span>
+            </div>
+            `
+                : ""
+            }
+            ${
               spajData.underwritingNotes
                 ? `
             <div class="info-item">
@@ -174,8 +287,9 @@ export default function SPAJDetailPage() {
     }
 
     <div class="footer">
-        <p>Dokumen ini digenerate secara otomatis oleh sistem Mastersystem ICT Solutions</p>
+        <p>Dokumen ini digenerate secara otomatis oleh sistem BNI Life</p>
         <p>Tanggal cetak: ${new Date().toLocaleDateString("id-ID")} ${new Date().toLocaleTimeString("id-ID")}</p>
+        <p><em>Premi dan kondisi dapat berubah sesuai hasil underwriting final</em></p>
     </div>
 </body>
 </html>
@@ -259,6 +373,8 @@ export default function SPAJDetailPage() {
     }
   }
 
+  const premiumDetails = calculatePremiumDetails(spajData)
+
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
@@ -326,6 +442,115 @@ export default function SPAJDetailPage() {
                         minimumFractionDigits: 0,
                       }).format(Number(spajData.sumInsured || 0))}
                     </span>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {premiumDetails && (
+              <Card className="mt-6">
+                <CardHeader>
+                  <CardTitle className="flex items-center space-x-2">
+                    <CreditCard className="w-5 h-5" />
+                    <span>Informasi Premi</span>
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="p-4 rounded-lg bg-orange-50 border border-orange-200">
+                    <div className="text-center mb-3">
+                      <p className="text-sm text-muted-foreground">Premi {premiumDetails.frequency}</p>
+                      <p className="text-2xl font-bold text-orange-600">
+                        {new Intl.NumberFormat("id-ID", {
+                          style: "currency",
+                          currency: "IDR",
+                          minimumFractionDigits: 0,
+                        }).format(premiumDetails.totalPremium)}
+                      </p>
+                    </div>
+                    <Separator className="my-3" />
+                    <div className="space-y-2 text-sm">
+                      <div className="flex justify-between">
+                        <span>Premi Dasar:</span>
+                        <span className="font-medium">
+                          {new Intl.NumberFormat("id-ID", {
+                            style: "currency",
+                            currency: "IDR",
+                            minimumFractionDigits: 0,
+                          }).format(premiumDetails.basePremium)}
+                        </span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span>Biaya Admin (5%):</span>
+                        <span className="font-medium">
+                          {new Intl.NumberFormat("id-ID", {
+                            style: "currency",
+                            currency: "IDR",
+                            minimumFractionDigits: 0,
+                          }).format(premiumDetails.adminFee)}
+                        </span>
+                      </div>
+                      <div className="flex justify-between text-orange-600 font-semibold">
+                        <span>Total per {premiumDetails.frequency}:</span>
+                        <span>
+                          {new Intl.NumberFormat("id-ID", {
+                            style: "currency",
+                            currency: "IDR",
+                            minimumFractionDigits: 0,
+                          }).format(premiumDetails.totalPremium)}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="space-y-2 text-sm">
+                    <div className="flex justify-between">
+                      <span className="text-muted-foreground">Premi Tahunan:</span>
+                      <span className="font-medium">
+                        {new Intl.NumberFormat("id-ID", {
+                          style: "currency",
+                          currency: "IDR",
+                          minimumFractionDigits: 0,
+                        }).format(premiumDetails.annualPremium)}
+                      </span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-muted-foreground">Rate Premi:</span>
+                      <span className="font-medium">{premiumDetails.premiumRate}% dari UP</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-muted-foreground">Frekuensi Bayar:</span>
+                      <span className="font-medium">{premiumDetails.periodsPerYear}x per tahun</span>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+
+            <Card className="mt-6">
+              <CardHeader>
+                <CardTitle className="flex items-center space-x-2">
+                  <Calendar className="w-5 h-5" />
+                  <span>Jadwal Pembayaran</span>
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                <div className="p-3 rounded-lg bg-blue-50 border border-blue-200">
+                  <div className="text-sm space-y-2">
+                    <div className="flex justify-between">
+                      <span className="text-muted-foreground">Jatuh Tempo Pertama:</span>
+                      <span className="font-medium">
+                        {new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toLocaleDateString("id-ID")}
+                      </span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-muted-foreground">Metode Pembayaran:</span>
+                      <span className="font-medium">{spajData.paymentMethod}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-muted-foreground">Status Pembayaran:</span>
+                      <Badge variant="outline" className="text-xs">
+                        Menunggu Aktivasi
+                      </Badge>
+                    </div>
                   </div>
                 </div>
               </CardContent>
