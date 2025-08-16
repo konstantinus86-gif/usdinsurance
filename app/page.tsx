@@ -199,14 +199,14 @@ export default function AgentDashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-background to-secondary/5">
+    <div className="min-h-screen bg-background">
       {/* Header */}
-      <header className="border-b border-border/50 bg-card/80 backdrop-blur-md sticky top-0 z-50 shadow-sm">
+      <header className="border-b border-border bg-background sticky top-0 z-50 shadow-sm">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
               <div className="flex items-center space-x-3">
-                <div className="p-2 rounded-xl bg-gradient-to-br from-primary/10 to-accent/10">
+                <div className="p-2 rounded-lg bg-primary/5 border border-primary/10">
                   <img src="/mastersystem-logo.png" alt="BNI Life" className="w-6 h-6" />
                 </div>
                 <div>
@@ -222,13 +222,13 @@ export default function AgentDashboard() {
                 <input
                   type="text"
                   placeholder="Cari SPAJ, nasabah..."
-                  className="pl-10 pr-4 py-2 border border-border/50 rounded-xl bg-background/80 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/30 w-64 transition-all"
+                  className="pl-10 pr-4 py-2 border border-border rounded-lg bg-background focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary w-64 transition-all"
                 />
               </div>
               <Button
                 variant="outline"
                 size="icon"
-                className="rounded-xl border-border/50 hover:bg-secondary/50 bg-transparent"
+                className="rounded-lg border-border hover:bg-secondary bg-transparent"
               >
                 <Bell className="w-4 h-4" />
               </Button>
@@ -236,7 +236,7 @@ export default function AgentDashboard() {
                 <Link href="/profile">
                   <Avatar className="cursor-pointer hover:ring-2 hover:ring-primary/30 transition-all ring-offset-2 ring-offset-background">
                     <AvatarImage src="/edy-san-profile.jpg" />
-                    <AvatarFallback className="bg-gradient-to-br from-primary/20 to-accent/20 text-foreground font-medium">
+                    <AvatarFallback className="bg-primary/10 text-foreground font-medium">
                       {agent.name
                         .split(" ")
                         .map((n: string) => n[0])
@@ -253,7 +253,7 @@ export default function AgentDashboard() {
                   size="icon"
                   onClick={handleLogout}
                   title="Logout"
-                  className="rounded-xl hover:bg-secondary/50"
+                  className="rounded-lg hover:bg-secondary"
                 >
                   <LogOut className="w-4 h-4" />
                 </Button>
@@ -265,7 +265,7 @@ export default function AgentDashboard() {
 
       <div className="container mx-auto px-4 py-6">
         {/* Welcome Section */}
-        <div className="mb-8 p-6 rounded-2xl bg-gradient-to-r from-primary/5 via-background to-accent/5 border border-border/30">
+        <div className="mb-8 p-6 rounded-lg bg-background border border-primary/10 shadow-sm">
           <h2 className="font-work-sans font-bold text-3xl text-foreground mb-2">Selamat Datang, {agent.name}</h2>
           <p className="text-muted-foreground text-lg">
             Kelola aplikasi asuransi dan tingkatkan produktivitas Anda dengan mudah
@@ -277,7 +277,7 @@ export default function AgentDashboard() {
           {stats.map((stat, index) => (
             <Card
               key={index}
-              className="hover:shadow-lg transition-all duration-300 border-border/50 bg-card/80 backdrop-blur-sm hover:scale-105"
+              className="hover:shadow-md transition-all duration-300 border-border bg-background hover:border-primary/20"
             >
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
@@ -286,7 +286,7 @@ export default function AgentDashboard() {
                     <p className="text-2xl font-bold text-foreground">{stat.value}</p>
                     <p className="text-sm text-green-600 font-medium">{stat.change}</p>
                   </div>
-                  <div className={`p-3 rounded-xl bg-gradient-to-br from-secondary/10 to-accent/10 ${stat.color}`}>
+                  <div className={`p-3 rounded-lg bg-primary/5 ${stat.color}`}>
                     <stat.icon className="w-6 h-6" />
                   </div>
                 </div>
@@ -298,7 +298,7 @@ export default function AgentDashboard() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Quick Actions */}
           <div className="lg:col-span-1">
-            <Card className="border-border/50 bg-card/80 backdrop-blur-sm">
+            <Card className="border-border bg-background shadow-sm">
               <CardHeader>
                 <CardTitle className="font-work-sans">Aksi Cepat</CardTitle>
                 <CardDescription>Fitur utama untuk produktivitas Anda</CardDescription>
@@ -306,7 +306,7 @@ export default function AgentDashboard() {
               <CardContent className="space-y-3">
                 <Link href="/spaj">
                   <Button
-                    className="w-full justify-start bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary/80 shadow-md hover:shadow-lg transition-all"
+                    className="w-full justify-start bg-primary hover:bg-primary/90 shadow-sm hover:shadow-md transition-all"
                     size="lg"
                   >
                     <Plus className="w-4 h-4 mr-2" />
@@ -316,7 +316,7 @@ export default function AgentDashboard() {
                 <Link href="/illustration">
                   <Button
                     variant="outline"
-                    className="w-full justify-start bg-secondary/20 hover:bg-secondary/30 border-border/50"
+                    className="w-full justify-start hover:bg-secondary border-border bg-transparent"
                     size="lg"
                   >
                     <BarChart3 className="w-4 h-4 mr-2" />
@@ -326,7 +326,7 @@ export default function AgentDashboard() {
                 <Link href="/education">
                   <Button
                     variant="outline"
-                    className="w-full justify-start bg-secondary/20 hover:bg-secondary/30 border-border/50"
+                    className="w-full justify-start hover:bg-secondary border-border bg-transparent"
                     size="lg"
                   >
                     <BookOpen className="w-4 h-4 mr-2" />
@@ -335,7 +335,7 @@ export default function AgentDashboard() {
                 </Link>
                 <Button
                   variant="outline"
-                  className="w-full justify-start bg-secondary/20 hover:bg-secondary/30 border-border/50"
+                  className="w-full justify-start hover:bg-secondary border-border bg-transparent"
                   size="lg"
                 >
                   <PenTool className="w-4 h-4 mr-2" />
@@ -343,7 +343,7 @@ export default function AgentDashboard() {
                 </Button>
                 <Button
                   variant="outline"
-                  className="w-full justify-start bg-secondary/20 hover:bg-secondary/30 border-border/50"
+                  className="w-full justify-start hover:bg-secondary border-border bg-transparent"
                   size="lg"
                 >
                   <Video className="w-4 h-4 mr-2" />
@@ -353,7 +353,7 @@ export default function AgentDashboard() {
             </Card>
 
             {/* Product Types */}
-            <Card className="mt-6 border-border/50 bg-card/80 backdrop-blur-sm">
+            <Card className="mt-6 border-border bg-background shadow-sm">
               <CardHeader>
                 <CardTitle className="font-work-sans">Jenis Produk</CardTitle>
                 <CardDescription>Pilih produk asuransi yang sesuai</CardDescription>
@@ -362,9 +362,9 @@ export default function AgentDashboard() {
                 {productTypes.map((product, index) => (
                   <div
                     key={index}
-                    className="flex items-start space-x-3 p-4 rounded-xl hover:bg-secondary/20 cursor-pointer transition-all duration-200 border border-transparent hover:border-border/30"
+                    className="flex items-start space-x-3 p-4 rounded-lg hover:bg-secondary/50 cursor-pointer transition-all duration-200 border border-transparent hover:border-border"
                   >
-                    <div className="p-3 rounded-xl bg-gradient-to-br from-primary/10 to-accent/10">
+                    <div className="p-3 rounded-lg bg-primary/5">
                       <product.icon className="w-5 h-5 text-primary" />
                     </div>
                     <div className="flex-1">
@@ -379,14 +379,14 @@ export default function AgentDashboard() {
 
           {/* Recent Applications */}
           <div className="lg:col-span-2">
-            <Card className="border-border/50 bg-card/80 backdrop-blur-sm">
+            <Card className="border-border bg-background shadow-sm">
               <CardHeader>
                 <div className="flex items-center justify-between">
                   <div>
                     <CardTitle className="font-work-sans">Aplikasi Terbaru</CardTitle>
                     <CardDescription>SPAJ yang baru disubmit dan statusnya</CardDescription>
                   </div>
-                  <Button variant="outline" size="sm" className="border-border/50 hover:bg-secondary/30 bg-transparent">
+                  <Button variant="outline" size="sm" className="border-border hover:bg-secondary bg-transparent">
                     Lihat Semua
                   </Button>
                 </div>
@@ -396,14 +396,14 @@ export default function AgentDashboard() {
                   {recentApplications.map((app, index) => (
                     <div
                       key={index}
-                      className="flex items-center justify-between p-4 border border-border/30 rounded-xl hover:bg-secondary/10 transition-all duration-200 hover:shadow-md"
+                      className="flex items-center justify-between p-4 border border-border rounded-lg hover:bg-secondary/30 transition-all duration-200 hover:shadow-sm"
                     >
                       <div className="flex items-center space-x-4">
                         <Avatar className="w-12 h-12 ring-2 ring-border/20">
                           <AvatarImage
                             src={`/abstract-geometric-shapes.png?height=48&width=48&query=${app.client} avatar`}
                           />
-                          <AvatarFallback className="bg-gradient-to-br from-primary/20 to-accent/20 text-foreground font-medium">
+                          <AvatarFallback className="bg-primary/10 text-foreground font-medium">
                             {app.client
                               .split(" ")
                               .map((n) => n[0])
@@ -450,7 +450,7 @@ export default function AgentDashboard() {
                             <Button
                               size="sm"
                               variant="outline"
-                              className="border-border/50 hover:bg-secondary/30 rounded-lg bg-transparent"
+                              className="border-border hover:bg-secondary rounded-lg bg-transparent"
                             >
                               <Eye className="w-4 h-4" />
                             </Button>
@@ -471,14 +471,14 @@ export default function AgentDashboard() {
             </Card>
 
             {/* Marketing Materials */}
-            <Card className="mt-6 border-border/50 bg-card/80 backdrop-blur-sm">
+            <Card className="mt-6 border-border bg-background shadow-sm">
               <CardHeader>
                 <CardTitle className="font-work-sans">Materi Marketing</CardTitle>
                 <CardDescription>Flyer dan video promosi terbaru</CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="relative rounded-xl overflow-hidden bg-gradient-to-br from-primary/10 via-primary/5 to-accent/10 p-6 border border-border/30 hover:shadow-lg transition-all duration-300">
+                  <div className="relative rounded-lg overflow-hidden bg-primary/5 p-6 border border-primary/10 hover:shadow-md transition-all duration-300">
                     <div className="absolute top-4 right-4">
                       <Badge variant="secondary" className="bg-accent/20 text-accent-foreground border-accent/30">
                         Baru
@@ -492,13 +492,13 @@ export default function AgentDashboard() {
                       <Button
                         size="sm"
                         variant="outline"
-                        className="border-border/50 hover:bg-secondary/30 rounded-lg bg-transparent"
+                        className="border-border hover:bg-secondary rounded-lg bg-transparent"
                       >
                         Download Flyer
                       </Button>
                     </Link>
                   </div>
-                  <div className="relative rounded-xl overflow-hidden bg-gradient-to-br from-accent/10 via-accent/5 to-primary/10 p-6 border border-border/30 hover:shadow-lg transition-all duration-300">
+                  <div className="relative rounded-lg overflow-hidden bg-accent/5 p-6 border border-accent/10 hover:shadow-md transition-all duration-300">
                     <div className="absolute top-4 right-4">
                       <Video className="w-5 h-5 text-muted-foreground" />
                     </div>
@@ -510,7 +510,7 @@ export default function AgentDashboard() {
                       <Button
                         size="sm"
                         variant="outline"
-                        className="border-border/50 hover:bg-secondary/30 rounded-lg bg-transparent"
+                        className="border-border hover:bg-secondary rounded-lg bg-transparent"
                       >
                         Tonton Video
                       </Button>

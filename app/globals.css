@@ -4,39 +4,39 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  /* Updated to soft BNI Life inspired color palette with warm orange and clean whites */
-  --background: oklch(0.99 0.005 50); /* #fefcfb - Warm off-white background */
-  --foreground: oklch(0.25 0.02 20); /* #3c3c3c - Warm dark gray text */
-  --card: oklch(0.98 0.01 40); /* #fdf8f6 - Soft warm card background */
-  --card-foreground: oklch(0.25 0.02 20); /* #3c3c3c - Card text color */
-  --popover: oklch(0.99 0.005 50); /* #fefcfb - Popover background */
-  --popover-foreground: oklch(0.25 0.02 20); /* #3c3c3c - Popover text */
-  --primary: oklch(0.55 0.12 25); /* #d97706 - Warm orange primary inspired by BNI Life */
-  --primary-foreground: oklch(0.99 0.005 50); /* #fefcfb - Light text on primary */
-  --secondary: oklch(0.95 0.02 40); /* #fef3f0 - Very light orange secondary */
+  /* Updated to clean white background with subtle orange accents */
+  --background: oklch(1 0 0); /* #ffffff - Pure white background */
+  --foreground: oklch(0.15 0.02 20); /* #262626 - Dark gray text for good contrast */
+  --card: oklch(0.99 0.005 50); /* #fefefe - Very light off-white for cards */
+  --card-foreground: oklch(0.15 0.02 20); /* #262626 - Card text color */
+  --popover: oklch(1 0 0); /* #ffffff - White popover background */
+  --popover-foreground: oklch(0.15 0.02 20); /* #262626 - Popover text */
+  --primary: oklch(0.55 0.12 25); /* #d97706 - Warm orange primary (kept for accents) */
+  --primary-foreground: oklch(1 0 0); /* #ffffff - White text on primary */
+  --secondary: oklch(0.97 0.01 40); /* #f9f9f9 - Very light gray secondary */
   --secondary-foreground: oklch(0.35 0.08 25); /* #92400e - Dark orange text on secondary */
-  --muted: oklch(0.96 0.01 40); /* #faf7f5 - Soft muted background */
-  --muted-foreground: oklch(0.45 0.02 20); /* #6b6b6b - Muted text */
-  --accent: oklch(0.65 0.15 30); /* #ea580c - Vibrant but soft orange accent */
-  --accent-foreground: oklch(0.99 0.005 50); /* #fefcfb - Light text on accent */
+  --muted: oklch(0.98 0.005 50); /* #fafafa - Light muted background */
+  --muted-foreground: oklch(0.45 0.02 20); /* #737373 - Muted text */
+  --accent: oklch(0.65 0.15 30); /* #ea580c - Orange accent (kept for highlights) */
+  --accent-foreground: oklch(1 0 0); /* #ffffff - White text on accent */
   --destructive: oklch(0.55 0.25 15); /* #be123c - Destructive red */
   --destructive-foreground: oklch(1 0 0); /* #ffffff - White text on destructive */
-  --border: oklch(0.92 0.01 40); /* #f0ebe8 - Soft warm border */
-  --input: oklch(0.97 0.01 40); /* #fbf8f6 - Soft input background */
+  --border: oklch(0.92 0.005 50); /* #ebebeb - Light gray border */
+  --input: oklch(0.99 0.005 50); /* #fefefe - Light input background */
   --ring: oklch(0.55 0.12 25 / 0.3); /* Primary color with opacity for focus ring */
   --chart-1: oklch(0.65 0.15 30); /* Orange chart color */
   --chart-2: oklch(0.7 0.15 250); /* Blue chart color */
   --chart-3: oklch(0.75 0.15 80); /* Yellow chart color */
   --chart-4: oklch(0.65 0.25 15); /* Red chart color */
   --chart-5: oklch(0.7 0.15 280); /* Purple chart color */
-  --radius: 0.75rem; /* Slightly more rounded for softer feel */
-  --sidebar: oklch(0.99 0.005 50); /* #fefcfb - Warm sidebar background */
-  --sidebar-foreground: oklch(0.25 0.02 20); /* #3c3c3c - Sidebar text */
+  --radius: 0.5rem; /* Reduced border radius for cleaner look */
+  --sidebar: oklch(1 0 0); /* #ffffff - White sidebar background */
+  --sidebar-foreground: oklch(0.15 0.02 20); /* #262626 - Sidebar text */
   --sidebar-primary: oklch(0.55 0.12 25); /* #d97706 - Sidebar primary elements */
-  --sidebar-primary-foreground: oklch(0.99 0.005 50); /* #fefcfb - Sidebar primary text */
+  --sidebar-primary-foreground: oklch(1 0 0); /* #ffffff - Sidebar primary text */
   --sidebar-accent: oklch(0.65 0.15 30); /* #ea580c - Sidebar accent */
-  --sidebar-accent-foreground: oklch(0.99 0.005 50); /* #fefcfb - Sidebar accent text */
-  --sidebar-border: oklch(0.92 0.01 40); /* #f0ebe8 - Sidebar border */
+  --sidebar-accent-foreground: oklch(1 0 0); /* #ffffff - Sidebar accent text */
+  --sidebar-border: oklch(0.92 0.005 50); /* #ebebeb - Sidebar border */
   --sidebar-ring: oklch(0.55 0.12 25 / 0.3); /* Sidebar focus ring */
   --font-inter: "Inter", sans-serif;
   --font-work-sans: "Work Sans", sans-serif;
