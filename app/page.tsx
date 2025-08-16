@@ -151,7 +151,7 @@ export default function AgentDashboard() {
   }
 
   const formatCurrency = (amount: string) => {
-    const num = Number.parseInt(amount)
+    const num = Number.parseInt(amount, 10)
     return new Intl.NumberFormat("id-ID", {
       style: "currency",
       currency: "IDR",
