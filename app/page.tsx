@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -22,17 +23,54 @@ import {
   XCircle,
   Eye,
   BookOpen,
+  LogOut,
 } from "lucide-react"
 import Link from "next/link"
 
 export default function AgentDashboard() {
+  const router = useRouter()
   const [activeTab, setActiveTab] = useState("dashboard")
   const [spajData, setSpajData] = useState<any[]>([])
+  const [agent, setAgent] = useState<any>(null)
 
   useEffect(() => {
+    const authData = localStorage.getItem("agentAuth")
+    if (!authData) {
+      router.push("/auth/login")
+      return
+    }
+
+    try {
+      const parsedAuth = JSON.parse(authData)
+      if (!parsedAuth.isAuthenticated) {
+        router.push("/auth/login")
+        return
+      }
+      setAgent(parsedAuth.agent)
+    } catch (error) {
+      router.push("/auth/login")
+      return
+    }
+
     const savedSPAJs = JSON.parse(localStorage.getItem("spajSubmissions") || "[]")
     setSpajData(savedSPAJs)
-  }, [])
+  }, [router])
+
+  const handleLogout = () => {
+    localStorage.removeItem("agentAuth")
+    router.push("/auth/login")
+  }
+
+  if (!agent) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
+          <p className="text-muted-foreground">Memuat dashboard...</p>
+        </div>
+      </div>
+    )
+  }
 
   const stats = [
     {
@@ -188,10 +226,24 @@ export default function AgentDashboard() {
               <Button variant="outline" size="icon">
                 <Bell className="w-4 h-4" />
               </Button>
-              <Avatar>
-                <AvatarImage src="/professional-agent-avatar.png" />
-                <AvatarFallback>AG</AvatarFallback>
-              </Avatar>
+              <div className="flex items-center space-x-2">
+                <Avatar>
+                  <AvatarImage src="/professional-agent-avatar.png" />
+                  <AvatarFallback>
+                    {agent.name
+                      .split(" ")
+                      .map((n: string) => n[0])
+                      .join("")}
+                  </AvatarFallback>
+                </Avatar>
+                <div className="hidden md:block text-right">
+                  <p className="text-sm font-medium text-foreground">{agent.name}</p>
+                  <p className="text-xs text-muted-foreground">{agent.branch}</p>
+                </div>
+                <Button variant="ghost" size="icon" onClick={handleLogout} title="Logout">
+                  <LogOut className="w-4 h-4" />
+                </Button>
+              </div>
             </div>
           </div>
         </div>
@@ -200,7 +252,7 @@ export default function AgentDashboard() {
       <div className="container mx-auto px-4 py-6">
         {/* Welcome Section */}
         <div className="mb-8">
-          <h2 className="font-work-sans font-bold text-2xl text-foreground mb-2">Selamat Datang di BNI Life</h2>
+          <h2 className="font-work-sans font-bold text-2xl text-foreground mb-2">Selamat Datang, {agent.name}</h2>
           <p className="text-muted-foreground">
             Kelola aplikasi asuransi dan tingkatkan produktivitas Anda dengan mudah
           </p>
