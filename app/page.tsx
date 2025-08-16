@@ -36,6 +36,17 @@ export default function AgentDashboard() {
   const [agent, setAgent] = useState<any>(null)
 
   useEffect(() => {
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker
+        .register("/sw.js")
+        .then((registration) => {
+          console.log("[v0] Service Worker registered successfully:", registration.scope)
+        })
+        .catch((error) => {
+          console.log("[v0] Service Worker registration failed:", error)
+        })
+    }
+
     const authData = localStorage.getItem("agentAuth")
     if (!authData) {
       router.push("/auth/login")

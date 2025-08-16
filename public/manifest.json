@@ -1,0 +1,27 @@
+{
+  "name": "BNI Life - Aplikasi Agen Asuransi",
+  "short_name": "BNI Life Agent",
+  "description": "Aplikasi submission online untuk agen asuransi BNI Life",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#ea580c",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/mastersystem-logo.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/mastersystem-logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable any"
+    }
+  ],
+  "categories": ["business", "finance", "productivity"],
+  "lang": "id",
+  "dir": "ltr"
+}
