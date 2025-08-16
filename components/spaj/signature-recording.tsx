@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Video, Square, Play, FileSignature, Check, Smartphone, Shield } from "lucide-react"
+import { Video, Square, Play, FileSignature, Check, Smartphone, Shield, User } from "lucide-react"
 
 interface SignatureRecordingProps {
   formData: any
@@ -25,6 +25,17 @@ export default function SignatureRecording({ formData, updateFormData }: Signatu
   const videoRef = useRef<HTMLVideoElement>(null)
   const mediaRecorderRef = useRef<MediaRecorder | null>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
+
+  const [isEditingData, setIsEditingData] = useState(false)
+  const [editableData, setEditableData] = useState({
+    fullName: formData.personalData?.fullName || "",
+    email: formData.personalData?.email || "",
+    phone: formData.personalData?.phone || "",
+    address: formData.personalData?.address || "",
+    productType: formData.productSelection?.productType || "",
+    productName: formData.productSelection?.productName || "",
+    sumInsured: formData.productSelection?.sumInsured || "",
+  })
 
   const startRecording = async () => {
     try {
@@ -124,8 +135,143 @@ export default function SignatureRecording({ formData, updateFormData }: Signatu
     }, 2000)
   }
 
+  const saveEditedData = () => {
+    updateFormData("personalData", {
+      ...formData.personalData,
+      ...editableData,
+    })
+    updateFormData("productSelection", {
+      ...formData.productSelection,
+      productType: editableData.productType,
+      productName: editableData.productName,
+      sumInsured: editableData.sumInsured,
+    })
+    setIsEditingData(false)
+  }
+
   return (
     <div className="space-y-6">
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <User className="h-5 w-5" />
+              Review Data SPAJ
+            </div>
+            <Button variant="outline" size="sm" onClick={() => setIsEditingData(!isEditingData)}>
+              {isEditingData ? "Batal" : "Edit Data"}
+            </Button>
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <p className="text-sm text-gray-600">
+            Silakan review dan lengkapi data sebelum melakukan tanda tangan dan recording.
+          </p>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="space-y-3">
+              <div>
+                <Label htmlFor="fullName">Nama Lengkap</Label>
+                {isEditingData ? (
+                  <Input
+                    id="fullName"
+                    value={editableData.fullName}
+                    onChange={(e) => setEditableData({ ...editableData, fullName: e.target.value })}
+                  />
+                ) : (
+                  <p className="text-sm font-medium p-2 bg-gray-50 rounded">{editableData.fullName || "Belum diisi"}</p>
+                )}
+              </div>
+              <div>
+                <Label htmlFor="email">Email</Label>
+                {isEditingData ? (
+                  <Input
+                    id="email"
+                    type="email"
+                    value={editableData.email}
+                    onChange={(e) => setEditableData({ ...editableData, email: e.target.value })}
+                  />
+                ) : (
+                  <p className="text-sm font-medium p-2 bg-gray-50 rounded">{editableData.email || "Belum diisi"}</p>
+                )}
+              </div>
+              <div>
+                <Label htmlFor="phone">No. Telepon</Label>
+                {isEditingData ? (
+                  <Input
+                    id="phone"
+                    value={editableData.phone}
+                    onChange={(e) => setEditableData({ ...editableData, phone: e.target.value })}
+                  />
+                ) : (
+                  <p className="text-sm font-medium p-2 bg-gray-50 rounded">{editableData.phone || "Belum diisi"}</p>
+                )}
+              </div>
+            </div>
+            <div className="space-y-3">
+              <div>
+                <Label htmlFor="address">Alamat</Label>
+                {isEditingData ? (
+                  <Input
+                    id="address"
+                    value={editableData.address}
+                    onChange={(e) => setEditableData({ ...editableData, address: e.target.value })}
+                  />
+                ) : (
+                  <p className="text-sm font-medium p-2 bg-gray-50 rounded">{editableData.address || "Belum diisi"}</p>
+                )}
+              </div>
+              <div>
+                <Label htmlFor="productType">Jenis Produk</Label>
+                {isEditingData ? (
+                  <Input
+                    id="productType"
+                    value={editableData.productType}
+                    onChange={(e) => setEditableData({ ...editableData, productType: e.target.value })}
+                  />
+                ) : (
+                  <p className="text-sm font-medium p-2 bg-gray-50 rounded">
+                    {editableData.productType || "Belum diisi"}
+                  </p>
+                )}
+              </div>
+              <div>
+                <Label htmlFor="sumInsured">Uang Pertanggungan</Label>
+                {isEditingData ? (
+                  <Input
+                    id="sumInsured"
+                    value={editableData.sumInsured}
+                    onChange={(e) => setEditableData({ ...editableData, sumInsured: e.target.value })}
+                  />
+                ) : (
+                  <p className="text-sm font-medium p-2 bg-gray-50 rounded">
+                    {editableData.sumInsured
+                      ? new Intl.NumberFormat("id-ID", {
+                          style: "currency",
+                          currency: "IDR",
+                          minimumFractionDigits: 0,
+                        }).format(Number(editableData.sumInsured))
+                      : "Belum diisi"}
+                  </p>
+                )}
+              </div>
+            </div>
+          </div>
+
+          {isEditingData && (
+            <div className="flex gap-2 pt-4">
+              <Button onClick={saveEditedData} className="flex items-center gap-2">
+                <Check className="h-4 w-4" />
+                Simpan Perubahan
+              </Button>
+              <Button variant="outline" onClick={() => setIsEditingData(false)}>
+                Batal
+              </Button>
+            </div>
+          )}
+        </CardContent>
+      </Card>
+
       {/* Video Recording Section */}
       <Card>
         <CardHeader>

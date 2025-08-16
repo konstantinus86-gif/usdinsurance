@@ -23,6 +23,7 @@ import {
   CreditCard,
   Calendar,
 } from "lucide-react"
+import { jsPDF } from "jspdf"
 
 export default function SPAJDetailPage() {
   const params = useParams()
@@ -93,218 +94,81 @@ export default function SPAJDetailPage() {
 
     const premiumDetails = calculatePremiumDetails(spajData)
 
-    const pdfContent = `
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <title>Laporan SPAJ - ${spajData.id}</title>
-    <style>
-        body { font-family: Arial, sans-serif; margin: 40px; color: #333; line-height: 1.6; }
-        .header { text-align: center; border-bottom: 3px solid #f97316; padding-bottom: 20px; margin-bottom: 30px; }
-        .logo { font-size: 24px; font-weight: bold; color: #f97316; margin-bottom: 5px; }
-        .subtitle { color: #666; font-size: 14px; }
-        .section { margin-bottom: 25px; page-break-inside: avoid; }
-        .section-title { font-size: 18px; font-weight: bold; color: #f97316; margin-bottom: 15px; border-bottom: 1px solid #e5e7eb; padding-bottom: 5px; }
-        .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-        .info-item { margin-bottom: 10px; }
-        .label { font-weight: bold; color: #374151; }
-        .value { color: #6b7280; margin-left: 10px; }
-        .premium-box { background: #fef3c7; border: 2px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 15px 0; }
-        .premium-highlight { background: #f97316; color: white; padding: 10px; border-radius: 5px; text-align: center; font-size: 18px; font-weight: bold; margin: 10px 0; }
-        .status-approved { background: #dcfce7; color: #166534; padding: 5px 10px; border-radius: 5px; display: inline-block; }
-        .status-pending { background: #fef3c7; color: #92400e; padding: 5px 10px; border-radius: 5px; display: inline-block; }
-        .status-rejected { background: #fee2e2; color: #991b1b; padding: 5px 10px; border-radius: 5px; display: inline-block; }
-        .underwriting-box { background: #f8fafc; border: 1px solid #e2e8f0; padding: 20px; border-radius: 8px; margin: 15px 0; }
-        .footer { margin-top: 40px; text-align: center; font-size: 12px; color: #9ca3af; border-top: 1px solid #e5e7eb; padding-top: 20px; }
-        .payment-schedule { background: #f0f9ff; border: 1px solid #0ea5e9; padding: 15px; border-radius: 8px; margin: 10px 0; }
-        table { width: 100%; border-collapse: collapse; margin: 15px 0; }
-        th, td { border: 1px solid #e5e7eb; padding: 8px; text-align: left; }
-        th { background: #f9fafb; font-weight: bold; }
-    </style>
-</head>
-<body>
-    <div class="header">
-        <div class="logo">BNI Life</div>
-        <div class="subtitle">Laporan Detail SPAJ & Informasi Premi</div>
-    </div>
+    const doc = new jsPDF()
 
-    <div class="section">
-        <div class="section-title">Informasi SPAJ</div>
-        <div class="info-grid">
-            <div class="info-item">
-                <span class="label">Nomor SPAJ:</span>
-                <span class="value">${spajData.id}</span>
-            </div>
-            <div class="info-item">
-                <span class="label">Tanggal Submit:</span>
-                <span class="value">${new Date(spajData.submittedAt || Date.now()).toLocaleDateString("id-ID")}</span>
-            </div>
-            <div class="info-item">
-                <span class="label">Status:</span>
-                <span class="status-${spajData.status}">${spajData.status === "approved" ? "Disetujui" : spajData.status === "pending" ? "Menunggu" : "Ditolak"}</span>
-            </div>
-            <div class="info-item">
-                <span class="label">Jenis Produk:</span>
-                <span class="value">${spajData.productType}</span>
-            </div>
-        </div>
-    </div>
+    doc.text(`Laporan SPAJ - ${spajData.id}`, 10, 10)
+    doc.text(`Nomor SPAJ: ${spajData.id}`, 10, 20)
+    doc.text(`Tanggal Submit: ${new Date(spajData.submittedAt || Date.now()).toLocaleDateString("id-ID")}`, 10, 30)
+    doc.text(
+      `Status: ${spajData.status === "approved" ? "Disetujui" : spajData.status === "pending" ? "Menunggu" : "Ditolak"}`,
+      10,
+      40,
+    )
+    doc.text(`Jenis Produk: ${spajData.productType}`, 10, 50)
 
-    <div class="section">
-        <div class="section-title">Data Tertanggung</div>
-        <div class="info-grid">
-            <div class="info-item">
-                <span class="label">Nama Lengkap:</span>
-                <span class="value">${spajData.fullName}</span>
-            </div>
-            <div class="info-item">
-                <span class="label">Tanggal Lahir:</span>
-                <span class="value">${spajData.birthDate}</span>
-            </div>
-            <div class="info-item">
-                <span class="label">Jenis Kelamin:</span>
-                <span class="value">${spajData.gender}</span>
-            </div>
-            <div class="info-item">
-                <span class="label">No. KTP:</span>
-                <span class="value">${spajData.idNumber}</span>
-            </div>
-            <div class="info-item">
-                <span class="label">Email:</span>
-                <span class="value">${spajData.email}</span>
-            </div>
-            <div class="info-item">
-                <span class="label">No. Telepon:</span>
-                <span class="value">${spajData.phone}</span>
-            </div>
-            <div class="info-item">
-                <span class="label">Alamat:</span>
-                <span class="value">${spajData.address}</span>
-            </div>
-            <div class="info-item">
-                <span class="label">Pekerjaan:</span>
-                <span class="value">${spajData.occupation}</span>
-            </div>
-        </div>
-    </div>
+    doc.text(`Data Tertanggung`, 10, 60)
+    doc.text(`Nama Lengkap: ${spajData.fullName}`, 10, 70)
+    doc.text(`Tanggal Lahir: ${spajData.birthDate}`, 10, 80)
+    doc.text(`Jenis Kelamin: ${spajData.gender}`, 10, 90)
+    doc.text(`No. KTP: ${spajData.idNumber}`, 10, 100)
+    doc.text(`Email: ${spajData.email}`, 10, 110)
+    doc.text(`No. Telepon: ${spajData.phone}`, 10, 120)
+    doc.text(`Alamat: ${spajData.address}`, 10, 130)
+    doc.text(`Pekerjaan: ${spajData.occupation}`, 10, 140)
 
-    <div class="section">
-        <div class="section-title">Detail Produk & Premi</div>
-        <div class="info-grid">
-            <div class="info-item">
-                <span class="label">Nama Produk:</span>
-                <span class="value">${spajData.productName}</span>
-            </div>
-            <div class="info-item">
-                <span class="label">Uang Pertanggungan:</span>
-                <span class="value">${new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", minimumFractionDigits: 0 }).format(Number(spajData.sumInsured || 0))}</span>
-            </div>
-            <div class="info-item">
-                <span class="label">Cara Bayar:</span>
-                <span class="value">${spajData.paymentMethod}</span>
-            </div>
-            <div class="info-item">
-                <span class="label">Rate Premi:</span>
-                <span class="value">${premiumDetails?.premiumRate}% dari UP</span>
-            </div>
-        </div>
-        
-        ${
-          premiumDetails
-            ? `
-        <div class="premium-box">
-            <h3 style="margin-top: 0; color: #f59e0b;">Rincian Premi ${premiumDetails.frequency}</h3>
-            <table>
-                <tr>
-                    <td><strong>Premi Dasar ${premiumDetails.frequency}</strong></td>
-                    <td style="text-align: right;"><strong>${new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", minimumFractionDigits: 0 }).format(premiumDetails.basePremium)}</strong></td>
-                </tr>
-                <tr>
-                    <td>Biaya Administrasi (5%)</td>
-                    <td style="text-align: right;">${new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", minimumFractionDigits: 0 }).format(premiumDetails.adminFee)}</td>
-                </tr>
-                <tr style="background: #fef3c7;">
-                    <td><strong>Total Premi ${premiumDetails.frequency}</strong></td>
-                    <td style="text-align: right;"><strong>${new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", minimumFractionDigits: 0 }).format(premiumDetails.totalPremium)}</strong></td>
-                </tr>
-                <tr>
-                    <td><strong>Premi Tahunan</strong></td>
-                    <td style="text-align: right;"><strong>${new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", minimumFractionDigits: 0 }).format(premiumDetails.annualPremium)}</strong></td>
-                </tr>
-            </table>
-            
-            <div class="payment-schedule">
-                <h4 style="margin-top: 0;">Jadwal Pembayaran</h4>
-                <p><strong>Frekuensi:</strong> ${premiumDetails.frequency} (${premiumDetails.periodsPerYear}x per tahun)</p>
-                <p><strong>Jumlah per periode:</strong> ${new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", minimumFractionDigits: 0 }).format(premiumDetails.totalPremium)}</p>
-                <p><strong>Tanggal jatuh tempo pertama:</strong> ${new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toLocaleDateString("id-ID")}</p>
-            </div>
-        </div>
-        `
-            : ""
-        }
-    </div>
-
-    ${
-      spajData.underwritingResult
-        ? `
-    <div class="section">
-        <div class="section-title">Hasil Underwriting</div>
-        <div class="underwriting-box">
-            <div class="info-item">
-                <span class="label">Keputusan:</span>
-                <span class="value">${spajData.underwritingResult === "approved" ? "Disetujui" : spajData.underwritingResult === "approved_with_conditions" ? "Disetujui dengan Syarat" : "Ditolak"}</span>
-            </div>
-            <div class="info-item">
-                <span class="label">Skor Risiko:</span>
-                <span class="value">${spajData.riskScore || "N/A"}</span>
-            </div>
-            ${
-              spajData.adjustedPremium
-                ? `
-            <div class="info-item">
-                <span class="label">Premi Disesuaikan:</span>
-                <span class="value">${new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", minimumFractionDigits: 0 }).format(Number(spajData.adjustedPremium))}</span>
-            </div>
-            `
-                : ""
-            }
-            ${
-              spajData.underwritingNotes
-                ? `
-            <div class="info-item">
-                <span class="label">Catatan:</span>
-                <span class="value">${spajData.underwritingNotes}</span>
-            </div>
-            `
-                : ""
-            }
-        </div>
-    </div>
-    `
-        : ""
+    if (premiumDetails) {
+      doc.text(`Detail Produk & Premi`, 10, 150)
+      doc.text(`Rincian Premi ${premiumDetails.frequency}`, 10, 160)
+      doc.text(
+        `Premi Dasar ${premiumDetails.frequency}: ${new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", minimumFractionDigits: 0 }).format(premiumDetails.basePremium)}`,
+        10,
+        170,
+      )
+      doc.text(
+        `Biaya Administrasi (5%): ${new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", minimumFractionDigits: 0 }).format(premiumDetails.adminFee)}`,
+        10,
+        180,
+      )
+      doc.text(
+        `Total Premi ${premiumDetails.frequency}: ${new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", minimumFractionDigits: 0 }).format(premiumDetails.totalPremium)}`,
+        10,
+        190,
+      )
+      doc.text(
+        `Premi Tahunan: ${new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", minimumFractionDigits: 0 }).format(premiumDetails.annualPremium)}`,
+        10,
+        200,
+      )
     }
 
-    <div class="footer">
-        <p>Dokumen ini digenerate secara otomatis oleh sistem BNI Life</p>
-        <p>Tanggal cetak: ${new Date().toLocaleDateString("id-ID")} ${new Date().toLocaleTimeString("id-ID")}</p>
-        <p><em>Premi dan kondisi dapat berubah sesuai hasil underwriting final</em></p>
-    </div>
-</body>
-</html>
-    `
+    if (spajData.underwritingResult) {
+      doc.text(`Hasil Underwriting`, 10, 210)
+      doc.text(
+        `Keputusan: ${spajData.underwritingResult === "approved" ? "Disetujui" : spajData.underwritingResult === "approved_with_conditions" ? "Disetujui dengan Syarat" : "Ditolak"}`,
+        10,
+        220,
+      )
+      doc.text(`Skor Risiko: ${spajData.riskScore || "N/A"}`, 10, 230)
+      if (spajData.adjustedPremium) {
+        doc.text(
+          `Premi Disesuaikan: ${new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", minimumFractionDigits: 0 }).format(Number(spajData.adjustedPremium))}`,
+          10,
+          240,
+        )
+      }
+      if (spajData.underwritingNotes) {
+        doc.text(`Catatan: ${spajData.underwritingNotes}`, 10, 250)
+      }
+    }
 
-    // Create and download PDF
-    const blob = new Blob([pdfContent], { type: "text/html" })
-    const url = URL.createObjectURL(blob)
-    const a = document.createElement("a")
-    a.href = url
-    a.download = `SPAJ_${spajData.id}_Report.html`
-    document.body.appendChild(a)
-    a.click()
-    document.body.removeChild(a)
-    URL.revokeObjectURL(url)
+    doc.text(`Dokumen ini digenerate secara otomatis oleh sistem BNI Life`, 10, 260)
+    doc.text(
+      `Tanggal cetak: ${new Date().toLocaleDateString("id-ID")} ${new Date().toLocaleTimeString("id-ID")}`,
+      10,
+      270,
+    )
+
+    doc.save(`SPAJ_${spajData.id}_Report.pdf`)
   }
 
   if (loading) {
