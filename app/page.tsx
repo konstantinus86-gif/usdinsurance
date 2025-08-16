@@ -227,15 +227,17 @@ export default function AgentDashboard() {
                 <Bell className="w-4 h-4" />
               </Button>
               <div className="flex items-center space-x-2">
-                <Avatar>
-                  <AvatarImage src="/professional-agent-avatar.png" />
-                  <AvatarFallback>
-                    {agent.name
-                      .split(" ")
-                      .map((n: string) => n[0])
-                      .join("")}
-                  </AvatarFallback>
-                </Avatar>
+                <Link href="/profile">
+                  <Avatar className="cursor-pointer hover:ring-2 hover:ring-primary/20 transition-all">
+                    <AvatarImage src="/edy-san-profile.jpg" />
+                    <AvatarFallback>
+                      {agent.name
+                        .split(" ")
+                        .map((n: string) => n[0])
+                        .join("")}
+                    </AvatarFallback>
+                  </Avatar>
+                </Link>
                 <div className="hidden md:block text-right">
                   <p className="text-sm font-medium text-foreground">{agent.name}</p>
                   <p className="text-xs text-muted-foreground">{agent.branch}</p>
