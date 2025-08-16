@@ -4,7 +4,9 @@ import { useState, useRef } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { Video, Square, Play, FileSignature, Check } from "lucide-react"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Video, Square, Play, FileSignature, Check, Smartphone, Shield } from "lucide-react"
 
 interface SignatureRecordingProps {
   formData: any
@@ -15,6 +17,11 @@ export default function SignatureRecording({ formData, updateFormData }: Signatu
   const [isRecording, setIsRecording] = useState(false)
   const [recordedVideo, setRecordedVideo] = useState<string | null>(null)
   const [signatureComplete, setSignatureComplete] = useState(false)
+  const [otpSent, setOtpSent] = useState(false)
+  const [otpCode, setOtpCode] = useState("")
+  const [otpVerified, setOtpVerified] = useState(false)
+  const [isVerifyingOtp, setIsVerifyingOtp] = useState(false)
+  const [otpTimer, setOtpTimer] = useState(0)
   const videoRef = useRef<HTMLVideoElement>(null)
   const mediaRecorderRef = useRef<MediaRecorder | null>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
@@ -67,6 +74,54 @@ export default function SignatureRecording({ formData, updateFormData }: Signatu
       timestamp: new Date().toISOString(),
       method: "digital",
     })
+  }
+
+  const sendOtp = async () => {
+    const phoneNumber = formData.personalData?.phone || "08123456789"
+
+    // Simulate OTP sending
+    setOtpSent(true)
+    setOtpTimer(60)
+
+    // Start countdown timer
+    const timer = setInterval(() => {
+      setOtpTimer((prev) => {
+        if (prev <= 1) {
+          clearInterval(timer)
+          return 0
+        }
+        return prev - 1
+      })
+    }, 1000)
+
+    // Simulate API call
+    console.log(`[v0] OTP sent to ${phoneNumber}`)
+    alert(`Kode OTP telah dikirim ke nomor ${phoneNumber}`)
+  }
+
+  const verifyOtp = async () => {
+    if (otpCode.length !== 6) {
+      alert("Kode OTP harus 6 digit")
+      return
+    }
+
+    setIsVerifyingOtp(true)
+
+    // Simulate OTP verification (in real app, this would call API)
+    setTimeout(() => {
+      if (otpCode === "123456") {
+        setOtpVerified(true)
+        updateFormData("otpVerification", {
+          verified: true,
+          timestamp: new Date().toISOString(),
+          phone: formData.personalData?.phone || "08123456789",
+        })
+        alert("Verifikasi OTP berhasil!")
+      } else {
+        alert("Kode OTP salah. Silakan coba lagi.")
+      }
+      setIsVerifyingOtp(false)
+    }, 2000)
   }
 
   return (
@@ -192,6 +247,86 @@ export default function SignatureRecording({ formData, updateFormData }: Signatu
           </div>
         </CardContent>
       </Card>
+
+      {signatureComplete && (
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Shield className="h-5 w-5" />
+              Verifikasi OTP (2FA)
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <p className="text-sm text-gray-600">
+              Untuk keamanan tambahan, silakan verifikasi identitas Anda dengan kode OTP yang akan dikirim ke nomor
+              handphone terdaftar.
+            </p>
+
+            <div className="bg-blue-50 p-3 rounded-lg">
+              <div className="flex items-center gap-2 text-blue-700">
+                <Smartphone className="h-4 w-4" />
+                <span className="text-sm">Nomor HP: {formData.personalData?.phone || "08123456789"}</span>
+              </div>
+            </div>
+
+            {!otpSent ? (
+              <Button onClick={sendOtp} className="flex items-center gap-2">
+                <Smartphone className="h-4 w-4" />
+                Kirim Kode OTP
+              </Button>
+            ) : (
+              <div className="space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="otpCode">Masukkan Kode OTP (6 digit)</Label>
+                  <Input
+                    id="otpCode"
+                    type="text"
+                    placeholder="123456"
+                    value={otpCode}
+                    onChange={(e) => setOtpCode(e.target.value.replace(/\D/g, "").slice(0, 6))}
+                    maxLength={6}
+                    className="text-center text-lg tracking-widest"
+                  />
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <Button
+                    onClick={verifyOtp}
+                    disabled={otpCode.length !== 6 || isVerifyingOtp || otpVerified}
+                    className="flex items-center gap-2"
+                  >
+                    <Shield className="h-4 w-4" />
+                    {isVerifyingOtp ? "Memverifikasi..." : "Verifikasi OTP"}
+                  </Button>
+
+                  {otpTimer > 0 ? (
+                    <span className="text-sm text-gray-500">Kirim ulang dalam {otpTimer} detik</span>
+                  ) : (
+                    <Button variant="outline" onClick={sendOtp} size="sm">
+                      Kirim Ulang OTP
+                    </Button>
+                  )}
+                </div>
+
+                {otpVerified && (
+                  <div className="bg-green-50 p-3 rounded-lg">
+                    <div className="flex items-center gap-2 text-green-700">
+                      <Check className="h-4 w-4" />
+                      <span className="text-sm">✓ Verifikasi OTP berhasil! Proses 2FA telah selesai.</span>
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+
+            <div className="text-xs text-gray-500 space-y-1">
+              <p>• Kode OTP berlaku selama 5 menit</p>
+              <p>• Jika tidak menerima SMS, periksa kotak masuk atau coba kirim ulang</p>
+              <p>• Verifikasi 2FA diperlukan untuk keamanan transaksi</p>
+            </div>
+          </CardContent>
+        </Card>
+      )}
     </div>
   )
 }
