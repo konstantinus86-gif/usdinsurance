@@ -24,6 +24,7 @@ import {
   Eye,
   BookOpen,
   LogOut,
+  Brain,
 } from "lucide-react"
 import Link from "next/link"
 
@@ -321,6 +322,16 @@ export default function AgentDashboard() {
                   >
                     <BarChart3 className="w-4 h-4 mr-2" />
                     Ilustrasi Produk
+                  </Button>
+                </Link>
+                <Link href="/underwriting">
+                  <Button
+                    variant="outline"
+                    className="w-full justify-start hover:bg-secondary border-border bg-transparent"
+                    size="lg"
+                  >
+                    <Brain className="w-4 h-4 mr-2" />
+                    Dashboard Underwriting
                   </Button>
                 </Link>
                 <Link href="/education">
