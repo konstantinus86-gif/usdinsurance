@@ -48,7 +48,7 @@ export default function LoginPage() {
     // Simulate API call
     await new Promise((resolve) => setTimeout(resolve, 1000))
 
-    if (credentials.username === "agent001" && credentials.password === "password123") {
+    if (credentials.username === "edysan01" && credentials.password === "123123") {
       setLoginStep("otp")
       startCountdown()
       // Simulate sending OTP
@@ -75,8 +75,8 @@ export default function LoginPage() {
           isAuthenticated: true,
           agent: {
             id: "AGT001",
-            name: "Ahmad Wijaya",
-            email: "ahmad.wijaya@bnilife.co.id",
+            name: "Edy San",
+            email: "edy.san@bnilife.co.id",
             phone: "+62812345678",
             branch: "Jakarta Pusat",
             loginTime: new Date().toISOString(),
@@ -108,8 +108,8 @@ export default function LoginPage() {
             isAuthenticated: true,
             agent: {
               id: "AGT001",
-              name: "Ahmad Wijaya",
-              email: "ahmad.wijaya@bnilife.co.id",
+              name: "Edy San",
+              email: "edy.san@bnilife.co.id",
               phone: "+62812345678",
               branch: "Jakarta Pusat",
               loginTime: new Date().toISOString(),
@@ -218,9 +218,9 @@ export default function LoginPage() {
                   <div className="text-sm text-gray-600 bg-blue-50 p-3 rounded-lg">
                     <strong>Demo Credentials:</strong>
                     <br />
-                    Username: agent001
+                    Username: edysan01
                     <br />
-                    Password: password123
+                    Password: 123123
                   </div>
                 </form>
               )}
@@ -297,8 +297,8 @@ export default function LoginPage() {
                         isAuthenticated: true,
                         agent: {
                           id: "AGT001",
-                          name: "Ahmad Wijaya",
-                          email: "ahmad.wijaya@bnilife.co.id",
+                          name: "Edy San",
+                          email: "edy.san@bnilife.co.id",
                           phone: "+62812345678",
                           branch: "Jakarta Pusat",
                           loginTime: new Date().toISOString(),
