@@ -25,6 +25,7 @@ import {
   BookOpen,
   LogOut,
   Brain,
+  MessageCircle,
 } from "lucide-react"
 import Link from "next/link"
 
@@ -342,6 +343,16 @@ export default function AgentDashboard() {
                   >
                     <BookOpen className="w-4 h-4 mr-2" />
                     Edukasi & Marketing
+                  </Button>
+                </Link>
+                <Link href="/chatbot">
+                  <Button
+                    variant="outline"
+                    className="w-full justify-start hover:bg-secondary border-border bg-transparent"
+                    size="lg"
+                  >
+                    <MessageCircle className="w-4 h-4 mr-2" />
+                    AI Assistant
                   </Button>
                 </Link>
                 <Button
