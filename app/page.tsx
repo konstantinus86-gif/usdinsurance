@@ -36,14 +36,18 @@ export default function AgentDashboard() {
   const [agent, setAgent] = useState<any>(null)
 
   useEffect(() => {
-    if ("serviceWorker" in navigator) {
+    if (
+      "serviceWorker" in navigator &&
+      window.location.protocol === "https:" &&
+      process.env.NODE_ENV === "production"
+    ) {
       navigator.serviceWorker
         .register("/sw.js")
         .then((registration) => {
-          console.log("[v0] Service Worker registered successfully:", registration.scope)
+          // Service Worker registered successfully - no console log to avoid spam
         })
         .catch((error) => {
-          console.log("[v0] Service Worker registration failed:", error)
+          // Service Worker registration failed - silently handle error
         })
     }
 
