@@ -366,22 +366,26 @@ export default function AgentDashboard() {
                     AI Assistant
                   </Button>
                 </Link>
-                <Button
-                  variant="outline"
-                  className="w-full justify-start hover:bg-secondary border-border bg-transparent"
-                  size="lg"
-                >
-                  <PenTool className="w-4 h-4 mr-2" />
-                  e-Signature
-                </Button>
-                <Button
-                  variant="outline"
-                  className="w-full justify-start hover:bg-secondary border-border bg-transparent"
-                  size="lg"
-                >
-                  <Video className="w-4 h-4 mr-2" />
-                  Recording Video
-                </Button>
+                <Link href="/signature">
+                  <Button
+                    variant="outline"
+                    className="w-full justify-start hover:bg-secondary border-border bg-transparent"
+                    size="lg"
+                  >
+                    <PenTool className="w-4 h-4 mr-2" />
+                    e-Signature
+                  </Button>
+                </Link>
+                <Link href="/recording">
+                  <Button
+                    variant="outline"
+                    className="w-full justify-start hover:bg-secondary border-border bg-transparent"
+                    size="lg"
+                  >
+                    <Video className="w-4 h-4 mr-2" />
+                    Recording Video
+                  </Button>
+                </Link>
               </CardContent>
             </Card>
 
