@@ -161,22 +161,22 @@ export default function AgentDashboard() {
 
   const getStatusBadge = (status: string, underwritingResult?: string) => {
     if (underwritingResult === "approved") {
-      return <Badge className="bg-green-100 text-green-800 hover:bg-green-100">UW: Disetujui</Badge>
+      return <Badge className="bg-green-50 text-green-700 hover:bg-green-50 border-green-200">UW: Disetujui</Badge>
     } else if (underwritingResult === "approved_with_conditions") {
-      return <Badge className="bg-yellow-100 text-yellow-800 hover:bg-yellow-100">UW: Syarat</Badge>
+      return <Badge className="bg-amber-50 text-amber-700 hover:bg-amber-50 border-amber-200">UW: Syarat</Badge>
     } else if (underwritingResult === "declined") {
-      return <Badge className="bg-red-100 text-red-800 hover:bg-red-100">UW: Ditolak</Badge>
+      return <Badge className="bg-red-50 text-red-700 hover:bg-red-50 border-red-200">UW: Ditolak</Badge>
     }
 
     switch (status) {
       case "approved":
-        return <Badge className="bg-green-100 text-green-800 hover:bg-green-100">Disetujui</Badge>
+        return <Badge className="bg-green-50 text-green-700 hover:bg-green-50 border-green-200">Disetujui</Badge>
       case "pending":
-        return <Badge className="bg-yellow-100 text-yellow-800 hover:bg-yellow-100">Menunggu</Badge>
+        return <Badge className="bg-amber-50 text-amber-700 hover:bg-amber-50 border-amber-200">Menunggu</Badge>
       case "review":
-        return <Badge className="bg-blue-100 text-blue-800 hover:bg-blue-100">Review</Badge>
+        return <Badge className="bg-blue-50 text-blue-700 hover:bg-blue-50 border-blue-200">Review</Badge>
       case "rejected":
-        return <Badge className="bg-red-100 text-red-800 hover:bg-red-100">Ditolak</Badge>
+        return <Badge className="bg-red-50 text-red-700 hover:bg-red-50 border-red-200">Ditolak</Badge>
       default:
         return <Badge variant="secondary">{status}</Badge>
     }
@@ -199,14 +199,16 @@ export default function AgentDashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-gradient-to-br from-background via-background to-secondary/5">
       {/* Header */}
-      <header className="border-b bg-card/50 backdrop-blur-sm sticky top-0 z-50">
+      <header className="border-b border-border/50 bg-card/80 backdrop-blur-md sticky top-0 z-50 shadow-sm">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
-              <div className="flex items-center space-x-2">
-                <img src="/mastersystem-logo.png" alt="BNI Life" className="w-8 h-8" />
+              <div className="flex items-center space-x-3">
+                <div className="p-2 rounded-xl bg-gradient-to-br from-primary/10 to-accent/10">
+                  <img src="/mastersystem-logo.png" alt="BNI Life" className="w-6 h-6" />
+                </div>
                 <div>
                   <h1 className="font-work-sans font-bold text-xl text-foreground">BNI Life</h1>
                   <p className="text-sm text-muted-foreground">Agent Portal</p>
@@ -220,17 +222,21 @@ export default function AgentDashboard() {
                 <input
                   type="text"
                   placeholder="Cari SPAJ, nasabah..."
-                  className="pl-10 pr-4 py-2 border rounded-lg bg-background focus:outline-none focus:ring-2 focus:ring-primary/20 w-64"
+                  className="pl-10 pr-4 py-2 border border-border/50 rounded-xl bg-background/80 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/30 w-64 transition-all"
                 />
               </div>
-              <Button variant="outline" size="icon">
+              <Button
+                variant="outline"
+                size="icon"
+                className="rounded-xl border-border/50 hover:bg-secondary/50 bg-transparent"
+              >
                 <Bell className="w-4 h-4" />
               </Button>
-              <div className="flex items-center space-x-2">
+              <div className="flex items-center space-x-3">
                 <Link href="/profile">
-                  <Avatar className="cursor-pointer hover:ring-2 hover:ring-primary/20 transition-all">
+                  <Avatar className="cursor-pointer hover:ring-2 hover:ring-primary/30 transition-all ring-offset-2 ring-offset-background">
                     <AvatarImage src="/edy-san-profile.jpg" />
-                    <AvatarFallback>
+                    <AvatarFallback className="bg-gradient-to-br from-primary/20 to-accent/20 text-foreground font-medium">
                       {agent.name
                         .split(" ")
                         .map((n: string) => n[0])
@@ -242,7 +248,13 @@ export default function AgentDashboard() {
                   <p className="text-sm font-medium text-foreground">{agent.name}</p>
                   <p className="text-xs text-muted-foreground">{agent.branch}</p>
                 </div>
-                <Button variant="ghost" size="icon" onClick={handleLogout} title="Logout">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={handleLogout}
+                  title="Logout"
+                  className="rounded-xl hover:bg-secondary/50"
+                >
                   <LogOut className="w-4 h-4" />
                 </Button>
               </div>
@@ -253,9 +265,9 @@ export default function AgentDashboard() {
 
       <div className="container mx-auto px-4 py-6">
         {/* Welcome Section */}
-        <div className="mb-8">
-          <h2 className="font-work-sans font-bold text-2xl text-foreground mb-2">Selamat Datang, {agent.name}</h2>
-          <p className="text-muted-foreground">
+        <div className="mb-8 p-6 rounded-2xl bg-gradient-to-r from-primary/5 via-background to-accent/5 border border-border/30">
+          <h2 className="font-work-sans font-bold text-3xl text-foreground mb-2">Selamat Datang, {agent.name}</h2>
+          <p className="text-muted-foreground text-lg">
             Kelola aplikasi asuransi dan tingkatkan produktivitas Anda dengan mudah
           </p>
         </div>
@@ -263,15 +275,18 @@ export default function AgentDashboard() {
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           {stats.map((stat, index) => (
-            <Card key={index} className="hover:shadow-md transition-shadow">
+            <Card
+              key={index}
+              className="hover:shadow-lg transition-all duration-300 border-border/50 bg-card/80 backdrop-blur-sm hover:scale-105"
+            >
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-sm font-medium text-muted-foreground">{stat.title}</p>
                     <p className="text-2xl font-bold text-foreground">{stat.value}</p>
-                    <p className="text-sm text-green-600">{stat.change}</p>
+                    <p className="text-sm text-green-600 font-medium">{stat.change}</p>
                   </div>
-                  <div className={`p-3 rounded-lg bg-muted ${stat.color}`}>
+                  <div className={`p-3 rounded-xl bg-gradient-to-br from-secondary/10 to-accent/10 ${stat.color}`}>
                     <stat.icon className="w-6 h-6" />
                   </div>
                 </div>
@@ -283,35 +298,54 @@ export default function AgentDashboard() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Quick Actions */}
           <div className="lg:col-span-1">
-            <Card>
+            <Card className="border-border/50 bg-card/80 backdrop-blur-sm">
               <CardHeader>
                 <CardTitle className="font-work-sans">Aksi Cepat</CardTitle>
                 <CardDescription>Fitur utama untuk produktivitas Anda</CardDescription>
               </CardHeader>
               <CardContent className="space-y-3">
                 <Link href="/spaj">
-                  <Button className="w-full justify-start" size="lg">
+                  <Button
+                    className="w-full justify-start bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary/80 shadow-md hover:shadow-lg transition-all"
+                    size="lg"
+                  >
                     <Plus className="w-4 h-4 mr-2" />
                     Buat SPAJ Baru
                   </Button>
                 </Link>
                 <Link href="/illustration">
-                  <Button variant="outline" className="w-full justify-start bg-transparent" size="lg">
+                  <Button
+                    variant="outline"
+                    className="w-full justify-start bg-secondary/20 hover:bg-secondary/30 border-border/50"
+                    size="lg"
+                  >
                     <BarChart3 className="w-4 h-4 mr-2" />
                     Ilustrasi Produk
                   </Button>
                 </Link>
                 <Link href="/education">
-                  <Button variant="outline" className="w-full justify-start bg-transparent" size="lg">
+                  <Button
+                    variant="outline"
+                    className="w-full justify-start bg-secondary/20 hover:bg-secondary/30 border-border/50"
+                    size="lg"
+                  >
                     <BookOpen className="w-4 h-4 mr-2" />
                     Edukasi & Marketing
                   </Button>
                 </Link>
-                <Button variant="outline" className="w-full justify-start bg-transparent" size="lg">
+                <Button
+                  variant="outline"
+                  className="w-full justify-start bg-secondary/20 hover:bg-secondary/30 border-border/50"
+                  size="lg"
+                >
                   <PenTool className="w-4 h-4 mr-2" />
                   e-Signature
                 </Button>
-                <Button variant="outline" className="w-full justify-start bg-transparent" size="lg">
+                <Button
+                  variant="outline"
+                  className="w-full justify-start bg-secondary/20 hover:bg-secondary/30 border-border/50"
+                  size="lg"
+                >
                   <Video className="w-4 h-4 mr-2" />
                   Recording Video
                 </Button>
@@ -319,7 +353,7 @@ export default function AgentDashboard() {
             </Card>
 
             {/* Product Types */}
-            <Card className="mt-6">
+            <Card className="mt-6 border-border/50 bg-card/80 backdrop-blur-sm">
               <CardHeader>
                 <CardTitle className="font-work-sans">Jenis Produk</CardTitle>
                 <CardDescription>Pilih produk asuransi yang sesuai</CardDescription>
@@ -328,10 +362,10 @@ export default function AgentDashboard() {
                 {productTypes.map((product, index) => (
                   <div
                     key={index}
-                    className="flex items-start space-x-3 p-3 rounded-lg hover:bg-muted/50 cursor-pointer transition-colors"
+                    className="flex items-start space-x-3 p-4 rounded-xl hover:bg-secondary/20 cursor-pointer transition-all duration-200 border border-transparent hover:border-border/30"
                   >
-                    <div className="p-2 rounded-lg bg-primary/10">
-                      <product.icon className="w-4 h-4 text-primary" />
+                    <div className="p-3 rounded-xl bg-gradient-to-br from-primary/10 to-accent/10">
+                      <product.icon className="w-5 h-5 text-primary" />
                     </div>
                     <div className="flex-1">
                       <h4 className="font-medium text-foreground">{product.name}</h4>
@@ -345,14 +379,14 @@ export default function AgentDashboard() {
 
           {/* Recent Applications */}
           <div className="lg:col-span-2">
-            <Card>
+            <Card className="border-border/50 bg-card/80 backdrop-blur-sm">
               <CardHeader>
                 <div className="flex items-center justify-between">
                   <div>
                     <CardTitle className="font-work-sans">Aplikasi Terbaru</CardTitle>
                     <CardDescription>SPAJ yang baru disubmit dan statusnya</CardDescription>
                   </div>
-                  <Button variant="outline" size="sm">
+                  <Button variant="outline" size="sm" className="border-border/50 hover:bg-secondary/30 bg-transparent">
                     Lihat Semua
                   </Button>
                 </div>
@@ -362,14 +396,14 @@ export default function AgentDashboard() {
                   {recentApplications.map((app, index) => (
                     <div
                       key={index}
-                      className="flex items-center justify-between p-4 border rounded-lg hover:bg-muted/50 transition-colors"
+                      className="flex items-center justify-between p-4 border border-border/30 rounded-xl hover:bg-secondary/10 transition-all duration-200 hover:shadow-md"
                     >
                       <div className="flex items-center space-x-4">
-                        <Avatar className="w-10 h-10">
+                        <Avatar className="w-12 h-12 ring-2 ring-border/20">
                           <AvatarImage
-                            src={`/abstract-geometric-shapes.png?height=40&width=40&query=${app.client} avatar`}
+                            src={`/abstract-geometric-shapes.png?height=48&width=48&query=${app.client} avatar`}
                           />
-                          <AvatarFallback>
+                          <AvatarFallback className="bg-gradient-to-br from-primary/20 to-accent/20 text-foreground font-medium">
                             {app.client
                               .split(" ")
                               .map((n) => n[0])
@@ -381,7 +415,9 @@ export default function AgentDashboard() {
                           <p className="text-sm text-muted-foreground">
                             {app.id} • {app.product}
                           </p>
-                          <p className="text-xs text-muted-foreground">UP: {formatCurrency(app.sumInsured)}</p>
+                          <p className="text-xs text-muted-foreground font-medium">
+                            UP: {formatCurrency(app.sumInsured)}
+                          </p>
                         </div>
                       </div>
                       <div className="flex items-center space-x-4">
@@ -396,7 +432,7 @@ export default function AgentDashboard() {
                                 size="sm"
                                 variant="outline"
                                 onClick={() => updateSPAJStatus(app.id, "approved")}
-                                className="text-green-600 hover:text-green-700"
+                                className="text-green-600 hover:text-green-700 border-green-200 hover:bg-green-50 rounded-lg"
                               >
                                 <CheckCircle className="w-4 h-4" />
                               </Button>
@@ -404,14 +440,18 @@ export default function AgentDashboard() {
                                 size="sm"
                                 variant="outline"
                                 onClick={() => updateSPAJStatus(app.id, "rejected")}
-                                className="text-red-600 hover:text-red-700"
+                                className="text-red-600 hover:text-red-700 border-red-200 hover:bg-red-50 rounded-lg"
                               >
                                 <XCircle className="w-4 h-4" />
                               </Button>
                             </>
                           )}
                           <Link href={`/spaj/${app.id}`}>
-                            <Button size="sm" variant="outline">
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              className="border-border/50 hover:bg-secondary/30 rounded-lg bg-transparent"
+                            >
                               <Eye className="w-4 h-4" />
                             </Button>
                           </Link>
@@ -431,28 +471,34 @@ export default function AgentDashboard() {
             </Card>
 
             {/* Marketing Materials */}
-            <Card className="mt-6">
+            <Card className="mt-6 border-border/50 bg-card/80 backdrop-blur-sm">
               <CardHeader>
                 <CardTitle className="font-work-sans">Materi Marketing</CardTitle>
                 <CardDescription>Flyer dan video promosi terbaru</CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="relative rounded-lg overflow-hidden bg-gradient-to-br from-primary/10 to-accent/10 p-6">
+                  <div className="relative rounded-xl overflow-hidden bg-gradient-to-br from-primary/10 via-primary/5 to-accent/10 p-6 border border-border/30 hover:shadow-lg transition-all duration-300">
                     <div className="absolute top-4 right-4">
-                      <Badge variant="secondary">Baru</Badge>
+                      <Badge variant="secondary" className="bg-accent/20 text-accent-foreground border-accent/30">
+                        Baru
+                      </Badge>
                     </div>
                     <h4 className="font-work-sans font-semibold text-foreground mb-2">Promo Unit Link Q1 2024</h4>
                     <p className="text-sm text-muted-foreground mb-4">
                       Dapatkan bonus investasi hingga 10% untuk nasabah baru
                     </p>
                     <Link href="/education">
-                      <Button size="sm" variant="outline">
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        className="border-border/50 hover:bg-secondary/30 rounded-lg bg-transparent"
+                      >
                         Download Flyer
                       </Button>
                     </Link>
                   </div>
-                  <div className="relative rounded-lg overflow-hidden bg-gradient-to-br from-accent/10 to-primary/10 p-6">
+                  <div className="relative rounded-xl overflow-hidden bg-gradient-to-br from-accent/10 via-accent/5 to-primary/10 p-6 border border-border/30 hover:shadow-lg transition-all duration-300">
                     <div className="absolute top-4 right-4">
                       <Video className="w-5 h-5 text-muted-foreground" />
                     </div>
@@ -461,7 +507,11 @@ export default function AgentDashboard() {
                       Penjelasan lengkap manfaat asuransi jiwa untuk keluarga
                     </p>
                     <Link href="/education">
-                      <Button size="sm" variant="outline">
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        className="border-border/50 hover:bg-secondary/30 rounded-lg bg-transparent"
+                      >
                         Tonton Video
                       </Button>
                     </Link>
